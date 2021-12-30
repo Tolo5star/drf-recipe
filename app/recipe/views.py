@@ -47,7 +47,7 @@ class IngredientViewSet(BaseViewSet):
     serializer_class = IngredientSerializer
 
 
-class RecipeViewSet(viewsets.ModelViewSet, mixins.CreateModelMixin):
+class RecipeViewSet(viewsets.ModelViewSet):
     """
     Manage recipes in db
     """
