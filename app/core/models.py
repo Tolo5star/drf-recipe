@@ -30,7 +30,7 @@ class UserManager(BaseUserManager):
         """
         common save and return utility
         """
-        user.save(user.save(using=self._db))
+        user.save(using=self._db)
         return user
 
 
