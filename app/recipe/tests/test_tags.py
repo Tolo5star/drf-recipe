@@ -68,3 +68,29 @@ class TestTagApiPrivate(TestCase):
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         self.assertEqual(len(resp.data), 1)
         self.assertEqual(resp.data[0]['name'], tag.name)
+
+    def test_create_tag_successful(self):
+        """
+        Test tag creation
+        """
+        data = {
+            'name': 'test_tag'
+        }
+
+        self.client.post(TAGS_URL, data)
+
+        tag_exists = Tag.objects.filter(user=self.user, name=data['name'])\
+            .exists()
+        self.assertTrue(tag_exists)
+
+    def test_create_tag_invalid_field(self):
+        """
+        Test tag creation
+        """
+        data = {
+            'name': ''
+        }
+
+        resp = self.client.post(TAGS_URL, data)
+
+        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
