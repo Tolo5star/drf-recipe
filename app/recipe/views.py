@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from core.models import Tag, Ingredient, Recipe
 
 from recipe.serializers import TagSerializer, IngredientSerializer,\
-    RecipeSerializer
+    RecipeSerializer, RecipeDetailSerializer
 
 
 class BaseViewSet(viewsets.GenericViewSet, mixins.ListModelMixin,
@@ -61,3 +61,13 @@ class RecipeViewSet(viewsets.ModelViewSet):
         Retrieve the recipes for the authenticated user
         """
         return self.queryset.filter(user=self.request.user)
+
+    def get_serializer_class(self):
+        """
+        return appropriate serializer class
+        """
+        # for api detail view
+        if self.action == 'retrieve':
+            return RecipeDetailSerializer
+
+        return self.serializer_class
