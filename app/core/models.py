@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, \
     PermissionsMixin
 
+from django.conf import settings
+
 
 class UserManager(BaseUserManager):
     """
@@ -38,8 +40,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     """
     Custom user model that uses email instead of usernames
     """
-    email = models.EmailField(max_length=500, unique=True)
-    name = models.CharField(max_length=300)
+    email = models.EmailField(max_length=255, unique=True)
+    name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
@@ -47,3 +49,17 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     # assign username field to email
     USERNAME_FIELD = 'email'
+
+
+class Tag(models.Model):
+    """
+    Tag to be used in recipe
+    """
+    name = models.CharField(max_length=255)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
+
+    def __str__(self):
+        return self.name
